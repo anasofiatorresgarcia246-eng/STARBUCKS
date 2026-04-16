@@ -1,0 +1,226 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Starbucks Menú</title>
+
+<style>
+body {
+    margin: 0;
+    font-family: Arial;
+    background: #f2f2f2;
+}
+
+/* HEADER */
+header {
+    background: #006241;
+    color: white;
+    text-align: center;
+    padding: 15px;
+}
+
+/* HERO */
+.hero {
+    background: url("https://images.unsplash.com/photo-1509042239860-f550ce710b93.jpg");
+    background-size: cover;
+    color: white;
+    padding: 80px;
+    text-align: center;
+}
+
+/* PRODUCTOS */
+.productos {
+    padding: 20px;
+    text-align: center;
+}
+
+h2 {
+    margin-top: 30px;
+}
+
+.card {
+    background: white;
+    display: inline-block;
+    margin: 10px;
+    padding: 15px;
+    width: 200px;
+    border-radius: 12px;
+    box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+    transition: 0.3s;
+}
+
+.card:hover {
+    transform: scale(1.05);
+}
+
+.card img {
+    width: 100%;
+    border-radius: 10px;
+}
+
+/* BOTÓN */
+button {
+    background: #006241;
+    color: white;
+    border: none;
+    padding: 10px;
+    border-radius: 6px;
+}
+
+/* CARRITO */
+.carrito {
+    position: fixed;
+    right: 0;
+    top: 0;
+    width: 240px;
+    height: 100%;
+    background: white;
+    padding: 10px;
+    border-left: 3px solid #006241;
+}
+
+.item {
+    display: flex;
+    justify-content: space-between;
+    font-size: 14px;
+}
+
+.eliminar {
+    background: red;
+    font-size: 12px;
+    padding: 2px 6px;
+}
+</style>
+</head>
+
+<body>
+
+<header>
+    <h1>Starbucks ☕</h1>
+</header>
+
+<section class="hero">
+    <h2>Menú completo</h2>
+    <p>Bebidas y comida 💚</p>
+</section>
+
+<section class="productos">
+
+<!-- CAFÉS -->
+<h2>☕ Cafés</h2>
+
+<div class="card">
+<img src="https://images.unsplash.com/photo-1509042239860-f550ce710b93.jpg">
+<h3>Latte</h3>
+<p>$65</p>
+<button onclick="agregar('Latte',65)">Agregar</button>
+</div>
+
+<div class="card">
+<img src="https://images.unsplash.com/photo-1495474472287-4d71bcdd2085.jpg">
+<h3>Capuccino</h3>
+<p>$60</p>
+<button onclick="agregar('Capuccino',60)">Agregar</button>
+</div>
+
+<div class="card">
+<img src="https://images.unsplash.com/photo-1511920170033-f8396924c348.jpg">
+<h3>Americano</h3>
+<p>$50</p>
+<button onclick="agregar('Americano',50)">Agregar</button>
+</div>
+
+<!-- FRÍAS -->
+<h2>🥤 Bebidas frías</h2>
+
+<div class="card">
+<img src="https://images.unsplash.com/photo-1521305916504-4a1121188589.jpg">
+<h3>Frappuccino</h3>
+<p>$80</p>
+<button onclick="agregar('Frappuccino',80)">Agregar</button>
+</div>
+
+<div class="card">
+<img src="https://images.unsplash.com/photo-1505253210343-5b43cdd0b75b.jpg">
+<h3>Cold Brew</h3>
+<p>$70</p>
+<button onclick="agregar('Cold Brew',70)">Agregar</button>
+</div>
+
+<!-- COMIDA -->
+<h2>🥐 Comida</h2>
+
+<div class="card">
+<img src="https://images.unsplash.com/photo-1551782450-a2132b4ba21d.jpg">
+<h3>Sandwich</h3>
+<p>$75</p>
+<button onclick="agregar('Sandwich',75)">Agregar</button>
+</div>
+
+<div class="card">
+<img src="https://images.unsplash.com/photo-1604908176997-431b5c1a7b5c.jpg">
+<h3>Panini</h3>
+<p>$85</p>
+<button onclick="agregar('Panini',85)">Agregar</button>
+</div>
+
+<!-- POSTRES -->
+<h2>🧁 Postres</h2>
+
+<div class="card">
+<img src="https://images.unsplash.com/photo-1551024506-0bccd828d307.jpg">
+<h3>Cheesecake</h3>
+<p>$90</p>
+<button onclick="agregar('Cheesecake',90)">Agregar</button>
+</div>
+
+<div class="card">
+<img src="https://images.unsplash.com/photo-1606312619070-d48b4c652a52.jpg">
+<h3>Brownie</h3>
+<p>$55</p>
+<button onclick="agregar('Brownie',55)">Agregar</button>
+</div>
+
+</section>
+
+<div class="carrito">
+    <h3>🛒 Carrito</h3>
+    <div id="lista"></div>
+    <p>Total: $<span id="total">0</span></p>
+    <button onclick="pagar()">Pagar</button>
+</div>
+
+<script>
+let total = 0;
+
+function agregar(nombre, precio) {
+    let lista = document.getElementById("lista");
+
+    let div = document.createElement("div");
+    div.className = "item";
+
+    div.innerHTML = `
+        ${nombre} $${precio}
+        <button class="eliminar" onclick="eliminar(this, ${precio})">X</button>
+    `;
+
+    lista.appendChild(div);
+
+    total += precio;
+    document.getElementById("total").textContent = total;
+}
+
+function eliminar(boton, precio) {
+    boton.parentElement.remove();
+    total -= precio;
+    document.getElementById("total").textContent = total;
+}
+
+function pagar() {
+    alert("Gracias por tu compra 💳");
+}
+</script>
+
+</body>
+</html>
